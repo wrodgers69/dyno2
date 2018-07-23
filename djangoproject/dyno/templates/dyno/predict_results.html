@@ -1,0 +1,37 @@
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+<br/>
+
+    <div class="container - fluid">
+
+      {% if img.prediction == 'Good' %}
+
+        <div class="alert alert-success" role="alert">
+          <h4 class="alert-heading">Prediction: {{img.prediction}}</h4>
+          <p>This Well is performing great!</p>
+          <hr>
+          <p class="mb-0">Recommended changes: Do Less!</p>
+        </div>
+
+      {% else %}
+
+        <div class="alert alert-danger" role="alert">
+          <h4 class="alert-heading">Prediction: {{img.prediction}}</h4>
+          <p>This well is not performing well.</p>
+          <hr>
+          <p class="mb-0">Recommended changes: Do stuff.</p>
+        </div>
+        {% endif %}
+
+      <figure class="figure - fluid">
+        <img src="{{img_path}}" class = "rounded img-fluid" alt="Responsive image"></img>
+        <figcaption class="figure-caption text-right">Well Name: Example Well</br>Card Name: {{img.title}}</figcaption>
+      </figure>
+
+    </div>
+
+
+{% endblock %}

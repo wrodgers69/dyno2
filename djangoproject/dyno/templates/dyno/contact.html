@@ -1,0 +1,44 @@
+
+
+
+{% extends 'base.html' %}
+
+{% block title %}Contact Form{% endblock %}
+
+{% block content %}
+
+<br/>
+<form method="post">
+  {% csrf_token %}
+  <div class="container-fluid text-secondary bg-light">
+  <table border="1">
+    {{ form.as_p }}
+  </table>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>
+
+<br/>
+
+<div class = "container text-light bg-secondary">
+<form method = "post">
+    {% csrf_token %}
+  <div class="form-group">
+    <label for="exampleInputEmail1">Name</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter name">
+    <small id="emailHelp" class="form-text text-muted">Just a test to see how this works.</small>
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Text</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Write some text here.">
+  </div>
+  <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+</html>
+
+{% endblock %}

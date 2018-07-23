@@ -1,0 +1,21 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<br/>
+
+<div class="embed-responsive embed-responsive-16by9">
+    <iframe class="embed-responsive-item"
+        src="{{iframeUrl}}"
+        frameborder="0"
+        width="1200"
+        height="800"
+        allowtransparency
+        allowfullscreen
+    ></iframe>
+</div>
+
+{% endblock %}

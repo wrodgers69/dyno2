@@ -1,0 +1,19 @@
+
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Form{% endblock %}
+
+{% block content %}
+<div class="container - fluid">
+  <div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">Please fill out all information!</h4>
+    <p>Also be sure to double check your entries.</p>
+    <hr>
+    <p class="mb-0">test</p>
+  </div>
+  {% csrf_token %}
+  {% crispy form  %}
+</div>
+
+{% endblock %}
