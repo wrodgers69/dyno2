@@ -9,3 +9,4 @@ keras
 tensorflow
 numpy
 django-crispy-forms
+openJDK
