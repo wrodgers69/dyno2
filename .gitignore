@@ -4,6 +4,7 @@ metabase/
 *.ipynb_checkpoints
 utils/
 metabase/
+migrations/
 *.jar
 
 ignore_working/
