@@ -9,3 +9,8 @@ keras
 tensorflow
 numpy
 django-crispy-forms
+openJDK
+PyJWT
+
+
+8====D~~~
