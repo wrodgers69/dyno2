@@ -11,5 +11,3 @@ numpy
 django-crispy-forms
 openJDK
 PyJWT
-
-test
