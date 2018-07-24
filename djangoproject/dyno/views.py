@@ -9,12 +9,12 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from dyno.models import Well_Profile, Card_Info, Dysfunction_Profile
-#from dyno.utils.predict_model import load_keras_model, predict_img
+from dyno.utils.predict_model import load_keras_model, predict_img
 from djangoproject.settings import *
-#import jwt
+import jwt
 
 #load keras model:
-#load_keras_model()
+load_keras_model()
 
 # Create your views here.
 
