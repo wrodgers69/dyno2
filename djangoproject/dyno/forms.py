@@ -31,6 +31,17 @@ class ImageForm(forms.ModelForm):
     class Meta:
         model = Card_Info
         fields = ('associated_well_profile', 'title', 'img_file')
+        
+    def __init__(self, *args, **kwargs):
+        super(ImageForm, self).__init__(*args, **kwargs)
+        # If you pass FormHelper constructor a form instance
+        # It builds a default layout with all its fields
+        self.helper = FormHelper(self)
+        # You can dynamically adjust your layout
+        self.helper.layout.append(Submit('Submit', 'Submit'))
+
+
+
 
 class CrispyModelForm(forms.ModelForm):
     class Meta:

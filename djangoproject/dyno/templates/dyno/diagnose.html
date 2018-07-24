@@ -1,14 +1,25 @@
 
 
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
 
 {% block content %}
+<div class="container - fluid">
+  <div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">Upload pump card for prediction!</h4>
+    <p>This is where you upload the dynamometer pump card and associate it to a Well Profile.</p>
+    <hr>
+    <p class="mb-0">This association allows you to look it up later.</p>
+  </div>
 
 <br/>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-outline-primary btn-lg">Predict</button>
+    {% crispy form  %}
+    <p>Check associated well profile information:</p>
+
   </form>
 
 {% endblock %}
+-
