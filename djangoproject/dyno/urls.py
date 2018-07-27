@@ -3,7 +3,7 @@ from django.urls import path
 from . import views
 
 from dyno.views import home, success
-from dyno.views import dashboard, diagnose, well_information, predict_results
+from dyno.views import dashboard, diagnose, well_information, predict_results, command_center, checkpoint
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -17,4 +17,6 @@ urlpatterns = [
     path('diagnose', diagnose.as_view(), name = 'diagnose'),
     path('well_information', well_information.as_view(), name = 'well_information'),
     path('predict_results', predict_results.as_view(), name = 'predict_results'),
+    path('command_center', command_center.as_view(), name = 'command_center'),
+    path('checkpoint', checkpoint.as_view(), name = 'checkpoint'),
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

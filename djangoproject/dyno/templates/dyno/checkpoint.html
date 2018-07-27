@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+
+
+<div class = "container-fluid">
+<div class="card">
+  <div class="card-header">
+    {{well_name}}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Found {{num_files}} files</h5>
+    <p class="card-text">Saving at directory: {{SAVE_DIR}}</p>
+    <div class="row">
+      <form method = 'post' >
+        {% csrf_token %}
+        <div class="col-sm-12 text-left">
+            <button action = "." method = 'POST' class="btn btn-success btn-md center-block" Style="width: 100px;">Predict</button>
+            <a href="{% url 'dyno:command_center' %}" class="btn btn-danger" Style="width: 100px;" >Abort</a>
+        </div>
+      </form>
+    </div>
+</div>
+
+
+{% endblock %}

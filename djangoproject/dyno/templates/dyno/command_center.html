@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% csrf_token %}
+
+{% load crispy_forms_tags %}
+{% crispy form form.helper %}
+
+{% endblock %}

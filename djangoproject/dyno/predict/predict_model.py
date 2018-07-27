@@ -13,6 +13,9 @@ import sqlite3
 import time
 import tensorflow as tf
 
+import glob
+
+
 import sys, os, django
 
 ### unhash below if running in ipython separate from django.
@@ -21,34 +24,7 @@ import sys, os, django
 #os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djangoproject.settings")
 #django.setup()
 
-from dyno.models import Card_Info
-
-#ignore for now:
-def predict_generator():
-    #for large size images - create prediction data_generators
-
-    #set directory. ###Note in django app will need to update using os.path.join(BASE_DIR, ____)
-    directory = '/Users/leerodgers/projects/djangoproject/images'
-
-    prediction_datagen = ImageDataGenerator(
-            rescale=1./255)
-
-    preds = prediction_datagen.flow_from_directory(
-        directory,
-        target_size=(256, 256),
-        color_mode='grayscale',
-        classes=None,
-        class_mode='binary',
-        batch_size=16,
-        shuffle=False,)
-
-    for data_batch, _ in preds:   # throws away the labels that would normally be generated.
-        pred_images = data_batch
-        break
-
-    print(str(preds.class_indices) + '# creating category for predict only.')
-    type(preds)
-    pred_images.shape
+from dyno.models import Card_Info, Well_Profile
 
 
 ### load model ###
@@ -63,6 +39,23 @@ def load_keras_model():
     graph = tf.get_default_graph()
     return model
 
+
+def analyze_directory(input_directory, well_name=None):
+
+    DIR = input_directory + '/*.*'
+    MEDIA_ROOT = os.path.abspath('media/')
+    SAVE_DIR = os.path.join(MEDIA_ROOT, well_name)    # fix this error
+
+    files = glob.glob(DIR)
+    num_files = len(files)
+
+    if num_files == 0:
+        print('No files in directory, or incorrect directory name format. Please confirm directory naming convention: "~/predict/well_name/images.jpg"')
+        return
+
+    print('Found %s files tied to %s. \nSaving files at %s' %(num_files, well_name, SAVE_DIR))
+
+    return num_files, well_name, SAVE_DIR
 
 def predict_img(predict_style = None, verbose = None, num_predicts = None, large_dataset = False):
     '''Gathers images from file, runs predicitons, and saves predictions to SQLite3 db for later rendering.
@@ -141,3 +134,77 @@ def predict_img(predict_style = None, verbose = None, num_predicts = None, large
 
     end_time = time.time()
     print('Time elapsed = ' + str(end_time- start_time))
+
+
+def predict_from_directory(input_directory, well_name = None, num_saves = None, verbose = None):
+    '''Predicts card images from directory
+
+    inputs:
+        - input_directory: location of directory to analyze. Must specify final structure as ~/predict/test_wellname/images.jpg
+        - well_name: name of the well that card images are related to. if "None" will put images in generic folder
+        - num_saves: how many of the images to save from the directory.
+        - verbose: if set to one, will print file input location and final save location.
+
+    returns:
+        - predicts on directory and loads images to model
+        '''
+
+    DIR = input_directory + '/*.*'
+    print(DIR)
+    MEDIA_ROOT = os.path.abspath('media/')
+    SAVE_DIR = os.path.join(MEDIA_ROOT, well_name)    # fix this error
+    print(SAVE_DIR)
+
+    files = glob.glob(DIR)
+    num_files = len(files)
+
+    if num_files == 0:
+        print('No files in directory, or incorrect directory name format. Please confirm directory naming convention: "~/predict/well_name/images.jpg"')
+        return
+
+    try:
+        os.makedirs(SAVE_DIR)
+    except:
+        pass
+
+    step = 0
+    preds = {}
+
+    print('...Reading files...')
+    for file in files:
+
+        if num_saves:
+            step+=1
+
+        _, img_file = file.split('predict/')
+        SAVE_PATH = os.path.join(MEDIA_ROOT, img_file)
+
+        #process image to make uniform prediction (grayscale, 256x256, proper shape, etc)
+        img = Image.open(file)
+        img = img.convert('L')
+        img.save(SAVE_PATH)
+        img = img.resize((256,256))
+        img_predict = img_to_array(img)
+        img_predict = img_predict.reshape((1,256,256,1))
+        img.close()
+
+        # make predictions
+        with graph.as_default():
+            pred = model.predict_classes(img_predict)
+        if pred == 1:
+            preds['%s' % img_file] = 'Good'
+        else:
+            preds['%s' % img_file] = 'Bad'
+
+        if num_saves:
+            if step > (num_saves-1):
+                break
+
+    print('...generating predictions...')
+    for img_file, prediction in preds.items():
+        well_profile = Well_Profile.objects.first()
+        x = Card_Info(associated_well_profile = well_profile, title = img_file, img_file = img_file, prediction = prediction)
+        x.save()
+
+    total_preds = len(preds)
+    print('...Complete. Predicted %s images...')
