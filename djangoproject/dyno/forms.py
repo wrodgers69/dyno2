@@ -32,8 +32,8 @@ class ImageForm(forms.ModelForm):
         model = Card_Info
         fields = ('associated_well_profile', 'title', 'img_file', 'card_description', 'actual_total_prod')
         widgets = {
-        'title': forms.TextInput(attrs={'placeholder': 'Suggested format = Well Name -- Card Number', 'required': True}),
-        'card_description': forms.TextInput(attrs={'placeholder': 'Describe what you suspect may be happening here!', 'required': True}),
+        'title': forms.TextInput(attrs={'placeholder': 'Suggested format = Well Name -- Card Number'}),
+        'card_description': forms.TextInput(attrs={'placeholder': 'Describe what you suspect may be happening here!'}),
         }
 
     def __init__(self, *args, **kwargs):
