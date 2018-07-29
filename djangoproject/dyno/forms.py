@@ -31,7 +31,11 @@ class UploadFileForm(forms.Form):
 class ImageForm(forms.ModelForm):
     class Meta:
         model = Card_Info
-        fields = ('associated_well_profile', 'title', 'img_file')
+        fields = ('associated_well_profile', 'title', 'img_file', 'card_description', 'actual_total_prod')
+        widgets = {
+        'title': forms.TextInput(attrs={'placeholder': 'Suggested format = Well Name -- Card Number'}),
+        'card_description': forms.TextInput(attrs={'placeholder': 'Describe what you suspect may be happening here!'}),
+        }
 
     def __init__(self, *args, **kwargs):
         super(ImageForm, self).__init__(*args, **kwargs)
@@ -49,7 +53,7 @@ class CrispyModelForm(forms.ModelForm):
         model = Well_Profile
         fields = '__all__'
         widgets = {
-            'well_name': forms.TextInput(attrs={'placeholder': 'Please Enter Well Name','required': True}),
+            'well_name': forms.TextInput(attrs={'placeholder': 'Please Enter Well Name', 'required': True}),
             'pumping_unit': forms.TextInput(attrs={'placeholder': 'Please Enter Pumping Unit', 'required': True})
         }
 
@@ -67,10 +71,6 @@ class DirectoryForm(forms.Form):
                         label = 'Directory:',
                         widget=forms.TextInput(attrs={'placeholder':'Please enter directory path'})
                         )
-    #well_name = forms.CharField(
-    #                    label = 'Well Name:',
-    #                    widget=forms.TextInput(attrs={'placeholder':'Please enter well name'})
-    #                    )
 
     well_name = forms.ChoiceField(
                                 label = 'Well Name:',

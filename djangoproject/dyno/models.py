@@ -75,8 +75,8 @@ class Card_Info(models.Model):
     img_file = models.ImageField(upload_to='images')
     card_description = models.CharField(max_length=200, blank = True)
     prediction = models.CharField(max_length=50, blank = True)#    date_upload = models.DateTimeField(editable=False)
-    date_updated = models.DateTimeField(null = True)
-    date_upload = models.DateTimeField(editable=False)
+    date_updated = models.DateTimeField(auto_now=True, null = True)
+    date_upload = models.DateTimeField(auto_now_add=True, editable=False)
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
 
