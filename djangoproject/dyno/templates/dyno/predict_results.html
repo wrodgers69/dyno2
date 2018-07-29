@@ -3,35 +3,49 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<br/>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <br/>
+          {% if img.prediction == 'Good' %}
 
-    <div class="container - fluid">
+          <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Prediction: {{img.prediction}}</h4>
+            <p>This Well is performing great!</p>
+            <hr>
+            <p class="mb-0">Recommended changes: Do Less!</p>
+          </div>
 
-      {% if img.prediction == 'Good' %}
+        {% else %}
 
-        <div class="alert alert-success" role="alert">
-          <h4 class="alert-heading">Prediction: {{img.prediction}}</h4>
-          <p>This Well is performing great!</p>
-          <hr>
-          <p class="mb-0">Recommended changes: Do Less!</p>
+          <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Prediction: {{img.prediction}}</h4>
+            <p>This well is not performing well.</p>
+            <hr>
+            <p class="mb-0">Recommended changes: Do stuff.</p>
+          </div>
+          {% endif %}
+
+            <img src="{{img_path}}" class = "rounded img-fluid" alt="Responsive image"></img>
+            <figcaption class="figure-caption text-right">Well Name: Example Well</br>Card Name: {{img.title}}</figcaption>
+
         </div>
 
-      {% else %}
+        <div class="col-6">
+          <br/>
+          <div class="embed-responsive embed-responsive-16by9">
+              <iframe class="embed-responsive-item"
+                  src="{{iframeUrl}}"
+                  frameborder="0"
+                  width="1200"
+                  height="2000"
+                  allowtransparency
+                  allowfullscreen
+              ></iframe>
 
-        <div class="alert alert-danger" role="alert">
-          <h4 class="alert-heading">Prediction: {{img.prediction}}</h4>
-          <p>This well is not performing well.</p>
-          <hr>
-          <p class="mb-0">Recommended changes: Do stuff.</p>
+          </div>
         </div>
-        {% endif %}
-
-      <figure class="figure - fluid">
-        <img src="{{img_path}}" class = "rounded img-fluid" alt="Responsive image"></img>
-        <figcaption class="figure-caption text-right">Well Name: Example Well</br>Card Name: {{img.title}}</figcaption>
-      </figure>
-
     </div>
-
+  </div>
 
 {% endblock %}

@@ -2,8 +2,9 @@ from django import forms
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from dyno.models import Card_Info, Well_Profile, Dysfunction_Profile
+from dyno.utils.choices import well_choice_gen
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
+from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field, Fieldset
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 
 
@@ -63,3 +64,33 @@ class CrispyModelForm(forms.ModelForm):
         self.helper = FormHelper(self)
         # You can dynamically adjust your layout
         self.helper.layout.append(Submit('Submit', 'Submit'))
+
+
+class DirectoryForm(forms.Form):
+    input_dir = forms.CharField(
+                        label = 'Directory:',
+                        widget=forms.TextInput(attrs={'placeholder':'Please enter directory path'})
+                        )
+
+    well_name = forms.ChoiceField(
+                                label = 'Well Name:',
+                                choices = well_choice_gen(),
+                                widget = forms.Select()
+                                )
+
+    def __init__(self, *args, **kwargs):
+        super(DirectoryForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_class = 'form-group'
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+                Div(
+                    Field('input_dir', css_class="form-group"),
+                    Field('well_name', css_class = "form-control"),
+                    Div(
+
+                        Div(Submit('submit', 'Analyze Directory', css_class = "btn btn-success"), css_class = 'col-sm'),
+                        css_class = 'row'),
+
+                    css_class = 'container-fluid',
+            ))
