@@ -1,8 +1,8 @@
 # Created by https://www.gitignore.io
 
+networks/
 metabase/
 *.ipynb_checkpoints
-utils/
 metabase/
 migrations/
 *.jar

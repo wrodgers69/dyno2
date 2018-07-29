@@ -3,21 +3,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container - fluid">
-
-
-
-
-
-
-
-
-    </div>
-
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="col-sm">
-
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <br/>
           {% if img.prediction == 'Good' %}
 
           <div class="alert alert-success" role="alert">
@@ -37,25 +26,26 @@
           </div>
           {% endif %}
 
-          <figure class="figure - fluid">
             <img src="{{img_path}}" class = "rounded img-fluid" alt="Responsive image"></img>
             <figcaption class="figure-caption text-right">Well Name: Example Well</br>Card Name: {{img.title}}</figcaption>
-          </figure>
 
         </div>
-        <div class="col-sm">
+
+        <div class="col-6">
+          <br/>
           <div class="embed-responsive embed-responsive-16by9">
               <iframe class="embed-responsive-item"
                   src="{{iframeUrl}}"
                   frameborder="0"
                   width="1200"
-                  height="800"
+                  height="2000"
                   allowtransparency
                   allowfullscreen
               ></iframe>
+
           </div>
         </div>
-      </div>
     </div>
+  </div>
 
 {% endblock %}

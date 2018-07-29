@@ -29,8 +29,8 @@ from dyno.models import Card_Info, Well_Profile
 
 ### load model ###
 def load_keras_model():
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath('dyno/utils/dyno_model_CNN_1')))
-    PATH = os.path.abspath('dyno/utils/dyno_model_CNN_1')
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath('dyno/networks/dyno_model_CNN_1')))
+    PATH = os.path.abspath('dyno/networks/dyno_model_CNN_1')
     ROOT = os.path.join(BASE_DIR, PATH)
 
     global model
@@ -42,9 +42,10 @@ def load_keras_model():
 
 def analyze_directory(input_directory, well_name=None):
 
+    dir_well_name = well_name.replace(" ", "_")
     DIR = input_directory + '/*.*'
     MEDIA_ROOT = os.path.abspath('media/')
-    SAVE_DIR = os.path.join(MEDIA_ROOT, well_name)    # fix this error
+    SAVE_DIR = os.path.join(MEDIA_ROOT, dir_well_name)    # fix this error
 
     files = glob.glob(DIR)
     num_files = len(files)
@@ -149,10 +150,11 @@ def predict_from_directory(input_directory, well_name = None, num_saves = None, 
         - predicts on directory and loads images to model
         '''
 
+    dir_well_name = well_name.replace(' ', '_')
     DIR = input_directory + '/*.*'
     print(DIR)
     MEDIA_ROOT = os.path.abspath('media/')
-    SAVE_DIR = os.path.join(MEDIA_ROOT, well_name)    # fix this error
+    SAVE_DIR = os.path.join(MEDIA_ROOT, dir_well_name)    # fix this error
     print(SAVE_DIR)
 
     files = glob.glob(DIR)
@@ -202,9 +204,9 @@ def predict_from_directory(input_directory, well_name = None, num_saves = None, 
 
     print('...generating predictions...')
     for img_file, prediction in preds.items():
-        well_profile = Well_Profile.objects.first()
+        well_profile = Well_Profile.objects.get(well_name=well_name)
         x = Card_Info(associated_well_profile = well_profile, title = img_file, img_file = img_file, prediction = prediction)
         x.save()
 
     total_preds = len(preds)
-    print('...Complete. Predicted %s images...')
+    print('...Complete. Predicted %s images...' %total_preds)
