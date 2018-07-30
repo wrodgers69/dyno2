@@ -123,7 +123,20 @@ class command_center(View):
     @method_decorator(login_required)
     def get(self, request):
         form = DirectoryForm()
-        return render(request, 'dyno/command_center.html', {'form':form})
+
+        METABASE_SITE_URL = "http://localhost:3000"
+        METABASE_SECRET_KEY = "c50834df91e9bcd1e94f8d3626fa4672ed31e33107e3ec592dcc0a85522c6ae5"
+        payload = {
+          "resource": {"dashboard": 3},
+          "params": {
+
+           }
+        }
+        token = jwt.encode(payload, METABASE_SECRET_KEY, algorithm="HS256")
+
+        iframeUrl = METABASE_SITE_URL + "/embed/dashboard/" + token.decode("utf8") + "#bordered=true&titled=true"
+
+        return render(request, 'dyno/command_center.html', {'form':form, 'iframeUrl':iframeUrl})
 
     @method_decorator(login_required)
     def post(self, request):
@@ -157,5 +170,7 @@ class checkpoint(View):
         num_files, well_name, SAVE_DIR = request.session['analyze_results']
 
         predict_from_directory(input_directory, well_name)
+
+        # del request.session['input_directory','analyze_resukts','well'] should we delete session??
 
         return HttpResponseRedirect(reverse_lazy('dyno:predict_results'))

@@ -85,12 +85,22 @@ class DirectoryForm(forms.Form):
         self.helper.form_method = 'post'
         self.helper.layout = Layout(
                 Div(
-                    Field('input_dir', css_class="form-group"),
-                    Field('well_name', css_class = "form-control"),
-                    Div(
-
-                        Div(Submit('submit', 'Analyze Directory', css_class = "btn btn-success"), css_class = 'col-sm'),
-                        css_class = 'row'),
-
-                    css_class = 'container-fluid',
-            ))
+                    HTML('''<br/>
+                            <label for="input_dir">Input Directory:</label>
+                                <input name = input_dir type="text" id="input_dir" class="form-control" aria-describedby="inputHelpBlock">
+                                <small id="inputHelpBlock" class="form-text text-muted">
+                                  Please be sure to specify the folder structure as "/path/to/dir/predict/<well name>/files.jpg"
+                                </small>
+                                <br/>'''),
+                     Field('well_name', css_class = "form-control", describedby = "wellHelpBlock"),
+                     HTML('''<small id = "wellHelpBlock" class="form-text text-warning">
+                                            *If your well is not in this dropdown list, please create well to assign cards to before analyzing and predicting.
+                                            </small>
+                                            </br>'''),
+                         Div(
+                                Div(Submit('submit', 'Analyze Directory', css_class = "btn btn-outline-success"),
+                                    HTML('''<a href="{% url 'dyno:well_information' %}" class="btn btn-outline-secondary" >Create Well</a>'''),
+                                    css_class ="col-sm-12 text-left"),
+                            css_class = 'row'),
+                     css_class = 'container-fluid',)
+                    )
