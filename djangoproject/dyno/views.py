@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from django.urls import reverse, reverse_lazy
-from dyno.forms import ContactForm, ImageForm, CrispyModelForm, DirectoryForm
+from dyno.forms import ContactForm, ImageForm, CrispyModelForm, DirectoryForm, CrispyDysfunctionModelForm
 from django.views.generic.edit import FormView
 from PIL import Image
 from django.contrib.auth.decorators import login_required
@@ -98,7 +98,8 @@ class predict_results(FormView):
         img = Card_Info.objects.latest('id')
         img_file = str(img.img_file)           # this section is ghetto
         img_path = os.path.join(MEDIA_URL, img_file)
-
+        dys_1 = Dysfunction_Profile.objects.get(dys_name="Good")
+        dys_2 = Dysfunction_Profile.objects.get(dys_name="Bad")
         METABASE_SITE_URL = "http://localhost:3000"
         METABASE_SECRET_KEY = "c50834df91e9bcd1e94f8d3626fa4672ed31e33107e3ec592dcc0a85522c6ae5"
 
@@ -112,7 +113,7 @@ class predict_results(FormView):
 
         iframeUrl = METABASE_SITE_URL + "/embed/dashboard/" + token.decode("utf8") + "#bordered=true&titled=true"
 
-        return render(request, 'dyno/predict_results.html', {'img':img, 'img_path':img_path, 'iframeUrl':iframeUrl})
+        return render(request, 'dyno/predict_results.html', {'img':img, 'img_path':img_path, 'iframeUrl':iframeUrl, 'dys_1': dys_1, 'dys_2': dys_2})
 
     @method_decorator(login_required)
     def post(self, request):
@@ -174,3 +175,19 @@ class checkpoint(View):
         # del request.session['input_directory','analyze_resukts','well'] should we delete session??
 
         return HttpResponseRedirect(reverse_lazy('dyno:predict_results'))
+
+class dysfunction(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        form = CrispyDysfunctionModelForm()
+        return render(request, 'dyno/dysfunction_profile.html', {
+        'form': form
+        })
+
+    @method_decorator(login_required)
+    def post(self, request):
+        form = CrispyDysfunctionModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+        return HttpResponseRedirect(reverse('dyno:success'))

@@ -104,3 +104,24 @@ class DirectoryForm(forms.Form):
                             css_class = 'row'),
                      css_class = 'container-fluid',)
                     )
+
+class CrispyDysfunctionModelForm(forms.ModelForm):
+    class Meta:
+        model = Dysfunction_Profile
+        fields = '__all__'
+        widgets = {
+            'dys_name': forms.TextInput(attrs={'placeholder': 'Please enter Dysfunction Name', 'required': True}),
+            'dys_description': forms.TextInput(attrs={'placeholder': 'Please describe the cause of this dysfunction', 'required': True}),
+            'dys_action': forms.TextInput(attrs={'placeholder': 'Please state actions to remediate the dysfunction', 'required': True})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(CrispyDysfunctionModelForm, self).__init__(*args, **kwargs)
+        self.fields['dys_name'].label = "Dysfunction Name:"
+        self.fields['dys_description'].label = "Cause of Dysfunction:"
+        self.fields['dys_action'].label = "Remediation Steps:"
+        # If you pass FormHelper constructor a form instance
+        # It builds a default layout with all its fields
+        self.helper = FormHelper(self)
+        # You can dynamically adjust your layout
+        self.helper.layout.append(Submit('Submit', 'Submit'))

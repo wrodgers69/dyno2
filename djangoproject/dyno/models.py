@@ -122,6 +122,7 @@ class Card_Info(models.Model):
 class Dysfunction_Profile(models.Model):
     #dys_id = models.AutoField(primary_key=True, blank = True, null = True)
     dys_name = models.CharField(max_length=50, blank = True, null = True)
+    #dys_name = models.ForeignKey(Card_Info, on_delete=models.CASCADE, to_field='prediction', unique=True)
     dys_description = models.CharField(max_length=50, blank = True, null = True)
     dys_action = models.CharField(max_length=50, blank = True, null = True)
     def __str__(self):
