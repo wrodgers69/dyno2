@@ -65,7 +65,7 @@ class CrispyModelForm(forms.ModelForm):
         # You can dynamically adjust your layout
         self.helper.layout.append(Submit('Submit', 'Submit'))
 
-        
+
 class DirectoryForm(forms.Form):
     input_dir = forms.CharField(
                         label = 'Directory:',
