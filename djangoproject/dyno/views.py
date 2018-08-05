@@ -130,8 +130,7 @@ class command_center(View):
         payload = {
           "resource": {"dashboard": 3},
           "params": {
-
-           }
+          }
         }
         token = jwt.encode(payload, METABASE_SECRET_KEY, algorithm="HS256")
 
