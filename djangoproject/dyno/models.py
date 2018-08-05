@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+import datetime
 
 # Create your models here.
 
@@ -66,6 +67,20 @@ class Well_Profile(models.Model):
 
     def __str__(self):
         return self.well_name
+
+    #"recently" is being defined as within 1 day of "now"
+    def was_updated_recently(self):
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.date_updated <= now
+
+    def was_created_recently(self):
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.date_created <= now
+
+    def production_check(self):
+        min = 0
+        return min <= self.last_well_test <= self.designed_total_prod
+
     pass
 
 class Card_Info(models.Model):
@@ -96,9 +111,18 @@ class Card_Info(models.Model):
     def __str__(self):
         return self.title
 
+    def was_updated_recently(self):
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.date_updated <= now
+
+    def was_created_recently(self):
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.date_upload <= now
+
 class Dysfunction_Profile(models.Model):
     #dys_id = models.AutoField(primary_key=True, blank = True, null = True)
     dys_name = models.CharField(max_length=50, blank = True, null = True)
+    #dys_name = models.ForeignKey(Card_Info, on_delete=models.CASCADE, to_field='prediction', unique=True)
     dys_description = models.CharField(max_length=50, blank = True, null = True)
     dys_action = models.CharField(max_length=50, blank = True, null = True)
     def __str__(self):
