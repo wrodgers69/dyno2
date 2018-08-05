@@ -89,13 +89,13 @@ class DirectoryForm(forms.Form):
                             <label for="input_dir">Input Directory:</label>
                                 <input name = input_dir type="text" id="input_dir" class="form-control" aria-describedby="inputHelpBlock">
                                 <small id="inputHelpBlock" class="form-text text-muted">
-                                  Please be sure to specify the folder structure as "/path/to/dir/predict/<well name>/files.jpg"
+                                  Please be sure to specify the folder structure as "/path/to/dir/predict/insert_well_name/all_images.jpg"
                                 </small>
                                 <br/>'''),
 
                     Field('well_name', css_class = "form-control", describedby = "wellHelpBlock"),
 
-                    HTML('''<small id = "wellHelpBlock" class="form-text text-warning">
+                    HTML('''<small id = "wellHelpBlock" class="form-text text-danger">
                                             *If your well is not in this dropdown list, please create well to assign cards to before analyzing and predicting.
                                             </small>
                                             </br>'''),
