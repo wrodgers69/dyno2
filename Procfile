@@ -1,1 +1,1 @@
-web: gunicorn djangoproject.wsgi --preload --log-file -
+web: gunicorn djangoproject.djangoproject.wsgi --preload --log-file -
