@@ -2,7 +2,7 @@ from django import forms
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from dyno.models import Card_Info, Well_Profile, Dysfunction_Profile
-#from dyno.utils.choices import well_choice_gen
+from dyno.utils.choices import well_choice_gen
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field, Fieldset
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
@@ -74,7 +74,7 @@ class DirectoryForm(forms.Form):
 
     well_name = forms.ChoiceField(
                                 label = 'Well Name:',
-                                #choices = well_choice_gen(),
+                                choices = well_choice_gen(),
                                 widget = forms.Select()
                                 )
 
