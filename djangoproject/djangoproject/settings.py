@@ -40,7 +40,7 @@ DATABASES = {
         )
     }
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','.herokuapp.com']
 
 #crispy form template pack specification
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
