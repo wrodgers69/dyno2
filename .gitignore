@@ -1,6 +1,5 @@
 # Created by https://www.gitignore.io
 
-networks/
 metabase/
 *.ipynb_checkpoints
 metabase/
