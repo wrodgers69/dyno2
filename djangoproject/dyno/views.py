@@ -123,13 +123,13 @@ class command_center(View):
     def get(self, request):
         form = DirectoryForm()
 
-        METABASE_SITE_URL = "http://dyno-metabase.herokuapp.com"
+        METABASE_SITE_URL = "https://dyno-metabase.herokuapp.com"
         METABASE_SECRET_KEY = "e357b3b54f5c59de60d890b532b5556049f7ef19e445beb0abfee57afd8782d1"
 
         payload = {
           "resource": {"question": 3},
           "params": {
-            
+
           }
         }
         token = jwt.encode(payload, METABASE_SECRET_KEY, algorithm="HS256")
