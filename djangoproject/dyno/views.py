@@ -15,7 +15,7 @@ from djangoproject.settings import *
 import jwt
 
 #load keras model:
-#load_keras_model()
+load_keras_model()
 
 # Create your views here.
 

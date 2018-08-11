@@ -29,12 +29,37 @@ from dyno.models import Card_Info, Well_Profile
 
 ### load model ###
 def load_keras_model():
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath('dyno/networks/dyno_model_CNN_1')))
-    PATH = os.path.abspath('dyno/networks/dyno_model_CNN_1')
-    ROOT = os.path.join(BASE_DIR, PATH)
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath('dyno_CNN_structure')))
+    STRUCTURE_PATH = os.path.abspath('dyno/networks/dyno_CNN_structure')
+    WEIGHTS_PATH = os.path.abspath('dyno/networks/dyno_CNN_weights')
 
+    STRUCTURE_ROOT = os.path.join(BASE_DIR, STRUCTURE_PATH)
+    WEIGHTS_ROOT = os.path.join(BASE_DIR, WEIGHTS_PATH)
+
+    #get network structure
+    print("...getting network structure...")
+    f = open(STRUCTURE_ROOT)
+    model_structure = f.read()
+    f.close
+
+    #instatiate network
+    print('...instatiating network...')
     global model
-    model = load_model(str(ROOT))
+    model = model_from_json(model_structure)
+
+    #load weights
+    print('...loading weights...')
+    model.load_weights(WEIGHTS_ROOT)
+
+    #compile
+    print('...compiling network...')
+    model.compile(loss='binary_crossentropy',
+                  optimizer= RMSprop(lr=1e-4),
+                  metrics=['acc'])
+
+    print('network loaded:')
+    model.summary()
+
     global graph
     graph = tf.get_default_graph()
     return model
