@@ -15,7 +15,7 @@ from djangoproject.settings import *
 import jwt
 
 #load keras model:
-load_keras_model()
+#load_keras_model()
 
 # Create your views here.
 
@@ -29,9 +29,8 @@ class dashboard(View):
     @method_decorator(login_required)
     def get(self, request):
 
-
-        METABASE_SITE_URL = "http://localhost:3000"
-        METABASE_SECRET_KEY = "c50834df91e9bcd1e94f8d3626fa4672ed31e33107e3ec592dcc0a85522c6ae5"
+        METABASE_SITE_URL = "https://dyno-metabase.herokuapp.com"
+        METABASE_SECRET_KEY = "e357b3b54f5c59de60d890b532b5556049f7ef19e445beb0abfee57afd8782d1"
 
         payload = {
           "resource": {"dashboard": 1},
@@ -42,7 +41,6 @@ class dashboard(View):
         token = jwt.encode(payload, METABASE_SECRET_KEY, algorithm="HS256")
 
         iframeUrl = METABASE_SITE_URL + "/embed/dashboard/" + token.decode("utf8") + "#bordered=true&titled=true"
-
         return render(request, 'dyno/dashboard.html', {'iframeUrl': iframeUrl})
 
     @method_decorator(login_required)
@@ -130,8 +128,7 @@ class command_center(View):
         payload = {
           "resource": {"dashboard": 3},
           "params": {
-
-           }
+          }
         }
         token = jwt.encode(payload, METABASE_SECRET_KEY, algorithm="HS256")
 
